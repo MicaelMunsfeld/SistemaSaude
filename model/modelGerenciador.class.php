@@ -2,106 +2,142 @@
 
 class ModelGerenciador {
 
-    // Configurações de conexão com o banco de dados.
-    private $server   = "localhost";
-    private $username = "root";
-    private $password;
-    private $db       = "sistemaSaude";
-    private $conn;
+	private $server = "localhost";
+	private $username = "root";
+	private $password;
+	private $db = "sistemaSaude";
+	private $conn;
 
 
-    // Construtor da classe.
-    public function __construct(){
-        try {
-            $this->conn = new mysqli($this->server, $this->username, $this->password, $this->db);
-        } catch (Exception $e) {
-            echo "Falha na conexão" . $e->getMessage();
-        }
+    /**
+     * Construtor da classe.
+     *
+     * Inicializa a conexão com o banco de dados.
+     *
+     * @throws Exception Em caso de falha na conexão.
+     */
+    public function __construct() {
+    	try {
+    		$this->conn = new mysqli($this->server, $this->username, $this->password, $this->db);
+    	} catch (Exception $e) {
+    		throw new Exception("Falha na conexão: " . $e->getMessage());
+    	}
     }
 
 
-    // Método para inserir um paciente na tabela "tbpaciente".
-    public function insert(){
-        if (isset($_POST['submit'])) {
-            if (isset($_POST['nome']) && isset($_POST['sexo']) && isset($_POST['idade']) && isset($_POST['cidade'])) {
-                if (!empty($_POST['nome']) && !empty($_POST['sexo']) && !empty($_POST['idade']) && !empty($_POST['cidade'])) {
-                    $nome = $_POST['nome'];
-                    $sexo = $_POST['sexo'];
-                    $idade = $_POST['idade'];
-                    $cidade = $_POST['cidade'];
-                    $query = "INSERT INTO tbpaciente (nome, sexo, idade, cidade) VALUES ('$nome', '$sexo', $idade, '$cidade')";
-                    if ($sql = $this->conn->query($query)) {
-                        echo "<script>alert('Paciente cadastrado!');</script>";
-                        echo "<script>window.location.href = 'index.php';</script>";
-                    } else {
-                        echo "<script>alert('Erro');</script>";
-                        echo "<script>window.location.href = 'index.php';</script>";
-                    }
-                } else {
-                    echo "<script>alert('Campos vazios');</script>";
-                    echo "<script>window.location.href = 'index.php';</script>";
-                }
-            }
-        }
+    /**
+     * Insere um novo paciente na tabela "tbpaciente".
+     *
+     * @return bool Retorna true se a inserção for bem-sucedida ou false em caso de erro.
+     *
+     * @throws Exception Em caso de campos vazios ou falha na inserção.
+     */
+    public function insert() {
+    	if(isset($_POST['submit'])) {
+    		if(!empty($_POST['nome']) && !empty($_POST['sexo']) && !empty($_POST['idade']) && !empty($_POST['cidade'])) {
+    			$nome   = $this->conn->real_escape_string($_POST['nome']);
+    			$sexo   = $this->conn->real_escape_string($_POST['sexo']);
+    			$idade  = intval($_POST['idade']);
+    			$cidade = $this->conn->real_escape_string($_POST['cidade']);
+
+    			$query = "INSERT INTO tbpaciente (nome, sexo, idade, cidade) VALUES (?, ?, ?, ?)";
+    			$stmt  = $this->conn->prepare($query);
+    			$stmt->bind_param("ssis", $nome, $sexo, $idade, $cidade);
+
+    			if($stmt->execute()) {
+    				return true;
+    			} else {
+    				throw new Exception("Erro ao inserir o paciente.");
+    			}
+    		} else {
+    			throw new Exception("Campos vazios.");
+    		}
+    	}
     }
 
-    // Método para buscar todos os pacientes na tabela "tbpaciente".
-    public function fetch(){
-        $dados = array();
-        $query = "SELECT * FROM tbpaciente";
-        if ($sql = $this->conn->query($query)) {
-            while ($row = $sql->fetch_assoc()) {
-                $dados[] = $row;
-            }
-        }
-        return $dados;
+    /**
+     * Busca todos os pacientes na tabela "tbpaciente".
+     *
+     * @return array Um array de pacientes.
+     */
+    public function fetch() {
+    	$dados = [];
+    	$query = "SELECT * FROM tbpaciente";
+    	$result = $this->conn->query($query);
+    	if($result) {
+    		while ($row = $result->fetch_assoc()) {
+    			$dados[] = $row;
+    		}
+    	}
+    	return $dados;
     }
 
-    // Método para excluir um paciente da tabela "tbpaciente" com base no ID.
-    public function delete($id){
-        // Consulta SQL para excluir um registro com base no ID
-        $query = "DELETE FROM tbpaciente where Id = '$id'";
-        if ($sql = $this->conn->query($query)) {
-            return true;
-        } else {
-            return false;
-        }
+    /**
+     * Exclui um paciente da tabela "tbpaciente" com base no ID.
+     *
+     * @param int $id O ID do paciente a ser excluído.
+     *
+     * @return bool Retorna true se a exclusão for bem-sucedida ou false em caso de erro.
+     *
+     * @throws Exception Em caso de erro na exclusão.
+     */
+    public function delete($id) {
+    	$query = "DELETE FROM tbpaciente WHERE Id = ?";
+    	$stmt = $this->conn->prepare($query);
+    	$stmt->bind_param("i", $id);
+    	if($stmt->execute()) {
+    		return true;
+    	}
+    	throw new Exception("Erro ao excluir o paciente.");
     }
 
-    // Método para buscar um paciente na tabela "tbpaciente" com base no ID.
-    public function fetch_single($id){
-        $dado = null;
-
-        // Consulta SQL para buscar um registro com base no ID
-        $query = "SELECT * FROM tbpaciente WHERE Id = '$id'";
-        if ($sql = $this->conn->query($query)) {
-            while ($row = $sql->fetch_assoc()) {
-                $dado = $row;
-            }
-        }
-        return $dado;
+    /**
+     * Busca um paciente na tabela "tbpaciente" com base no ID.
+     *
+     * @param int $id O ID do paciente a ser buscado.
+     *
+     * @return array|null Um array representando o paciente ou null se não encontrado.
+     */
+    public function fetch_single($id) {
+    	$query = "SELECT * FROM tbpaciente WHERE Id = ?";
+    	$stmt = $this->conn->prepare($query);
+    	$stmt->bind_param("i", $id);
+    	$stmt->execute();
+    	$result = $stmt->get_result();
+    	if($result->num_rows === 0) {
+    		return null;
+    	}
+    	return $result->fetch_assoc();
     }
 
-    // Método para editar um paciente na tabela "tbpaciente".
-    public function edit($id){
-        $dado = null;
-        $query = "SELECT * FROM tbpaciente WHERE Id = '$id'";
-        if ($sql = $this->conn->query($query)) {
-            while ($row = $sql->fetch_assoc()) {
-                $dado = $row;
-            }
-        }
-        return $dado;
+    /**
+     * Edita um paciente na tabela "tbpaciente".
+     *
+     * @param int $id O ID do paciente a ser editado.
+     *
+     * @return array|null Um array representando o paciente ou null se não encontrado.
+     */
+    public function edit($id) {
+    	return $this->fetch_single($id);
     }
 
-    // Método para atualizar um paciente na tabela "tbpaciente".
-    public function update($dado){
-        $query = "UPDATE tbpaciente SET nome='$dado[nome]', sexo='$dado[sexo]', idade=$dado[idade], cidade='$dado[cidade]' WHERE Id='$dado[Id]'";
-        if ($sql = $this->conn->query($query)) {
-            return true;
-        } else {
-            return false;
-        }
+    /**
+     * Atualiza um paciente na tabela "tbpaciente".
+     *
+     * @param array $dado Um array contendo os novos dados do paciente.
+     *
+     * @return bool Retorna true se a atualização for bem-sucedida ou false em caso de erro.
+     *
+     * @throws Exception Em caso de erro na atualização.
+     */
+    public function update($dado) {
+    	$query = "UPDATE tbpaciente SET nome=?, sexo=?, idade=?, cidade=? WHERE Id = ?";
+    	$stmt = $this->conn->prepare($query);
+    	$stmt->bind_param("ssisi", $dado['nome'], $dado['sexo'], $dado['idade'], $dado['cidade'], $dado['Id']);
+    	if($stmt->execute()) {
+    		return true;
+    	}
+    	throw new Exception("Erro ao atualizar o paciente.");
     }
 }
 
