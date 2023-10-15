@@ -56,8 +56,11 @@ include 'autoload.php';
 						<input type="text" name="nome" value="<?php echo $row['nome']; ?>" class="form-control">
 					</div>
 					<div class="form-group">
-						<label for="">Sexo</label>
-						<input type="text" name="sexo" value="<?php echo $row['sexo']; ?>" class="form-control">
+					    <label for="">Sexo</label>
+					    <select name="sexo" class="form-control">
+					        <option value="M">Masculino</option>
+					        <option value="F">Feminino</option>
+					    </select>
 					</div>
 					<div class="form-group">
 						<label for="">Idade</label>

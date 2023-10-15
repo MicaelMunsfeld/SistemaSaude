@@ -25,35 +25,38 @@ class ModelGerenciador {
     }
 
 
-    /**
-     * Insere um novo paciente na tabela "tbpaciente".
-     *
-     * @return bool Retorna true se a inserção for bem-sucedida ou false em caso de erro.
-     *
-     * @throws Exception Em caso de campos vazios ou falha na inserção.
-     */
-    public function insert() {
-    	if(isset($_POST['submit'])) {
-    		if(!empty($_POST['nome']) && !empty($_POST['sexo']) && !empty($_POST['idade']) && !empty($_POST['cidade'])) {
-    			$nome   = $this->conn->real_escape_string($_POST['nome']);
-    			$sexo   = $this->conn->real_escape_string($_POST['sexo']);
-    			$idade  = intval($_POST['idade']);
-    			$cidade = $this->conn->real_escape_string($_POST['cidade']);
+	/**
+	 * Insere um novo paciente na tabela "tbpaciente".
+	 *
+	 * @return bool Retorna true se a inserção for bem-sucedida ou false em caso de erro.
+	 *
+	 * @throws Exception Em caso de campos vazios ou falha na inserção.
+	 */
+	public function insert() {
+	    if (isset($_POST['submit'])) {
+	        if (isset($_POST['nome']) && isset($_POST['sexo']) && isset($_POST['idade']) && isset($_POST['cidade'])) {
+	            if (!empty($_POST['nome']) && !empty($_POST['sexo']) && !empty($_POST['idade']) && !empty($_POST['cidade'])) {
+	                $nome   = $this->conn->real_escape_string($_POST['nome']);
+	                $sexo   = $this->conn->real_escape_string($_POST['sexo']);
+	                $idade  = intval($_POST['idade']);
+	                $cidade = $this->conn->real_escape_string($_POST['cidade']);
 
-    			$query = "INSERT INTO tbpaciente (nome, sexo, idade, cidade) VALUES (?, ?, ?, ?)";
-    			$stmt  = $this->conn->prepare($query);
-    			$stmt->bind_param("ssis", $nome, $sexo, $idade, $cidade);
+	                $query = "INSERT INTO tbpaciente (nome, sexo, idade, cidade) VALUES (?, ?, ?, ?)";
+	                $stmt  = $this->conn->prepare($query);
+	                $stmt->bind_param("ssis", $nome, $sexo, $idade, $cidade);
 
-    			if($stmt->execute()) {
-    				return true;
-    			} else {
-    				throw new Exception("Erro ao inserir o paciente.");
-    			}
-    		} else {
-    			throw new Exception("Campos vazios.");
-    		}
-    	}
-    }
+	                if ($stmt->execute()) {
+	                    echo "<script>alert('Paciente cadastrado!');</script>";
+	                    echo "<script>window.location.href = 'index.php';</script>";
+	                } else {
+	                    echo "<script>alert('Erro ao inserir o paciente.');</script>";
+	                }
+	            } else {
+	                echo "<script>alert('Campos vazios.');</script>";
+	            }
+	        }
+	    }
+	}
 
     /**
      * Busca todos os pacientes na tabela "tbpaciente".

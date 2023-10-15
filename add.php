@@ -31,8 +31,11 @@ include 'autoload.php';
 						<input type="text" name="nome" class="form-control">
 					</div>
 					<div class="form-group">
-						<label for="">Sexo (M/F)</label>
-						<input type="text" name="sexo" pattern="[M|F]" title="Digite 'M' para Masculino ou 'F' para Feminino" class="form-control" maxlength="1">
+					    <label for="">Sexo</label>
+					    <select name="sexo" class="form-control">
+					        <option value="M">Masculino</option>
+					        <option value="F">Feminino</option>
+					    </select>
 					</div>
 					<div class="form-group">
 						<label for="">Idade</label>

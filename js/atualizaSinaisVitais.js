@@ -40,4 +40,4 @@ function atualizaSinaisVitais() {
 		}
 	});
 }
-setInterval(atualizaSinaisVitais, 8000);
+setInterval(atualizaSinaisVitais, 3500);
