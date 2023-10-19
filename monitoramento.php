@@ -3,6 +3,29 @@
 include 'autoload.php';
 
 /**
+ * Busca os sinais vitais de todos os pacientes a partir dos dados já existentes do paciente.
+ * 
+ * @return array()
+ */
+function getSinaisVitaisParaTodosPacientes() {
+	$model     = new ModelGerenciador();
+	$pacientes = $model->fetch();
+	$sinaisVitaisPacientes = [];
+	foreach ($pacientes as $paciente) {
+		$sinaisVitaisPaciente    = getSinaisVitais();
+		$sinaisVitaisPacientes[] = [
+			'Id' => $paciente['Id'],
+			'frequenciaCardiaca' => $sinaisVitaisPaciente['frequenciaCardiaca'],
+			'sistolicaBP'        => $sinaisVitaisPaciente['sistolicaBP'],
+			'diastolicaBP'       => $sinaisVitaisPaciente['diastolicaBP'],
+			'temperatura'        => $sinaisVitaisPaciente['temperatura'],
+			'saturacaoOxigenio'  => $sinaisVitaisPaciente['saturacaoOxigenio'],
+		];
+	}
+	return $sinaisVitaisPacientes;
+}
+
+/**
  * Busca os sinais vitais do paciente(gerados de forma aleatória a partir do padrão pré-estabelecido).
  * 
  * @return array()
@@ -20,29 +43,6 @@ function getSinaisVitais() {
     	'temperatura'        => $temperatura,
     	'saturacaoOxigenio'  => $saturacaoOxigenio
     ];
-}
-
-/**
- * Busca os sinais vitais de todos os pacientes a partir dos dados já existentes do paciente.
- * 
- * @return array()
- */
-function getSinaisVitaisParaTodosPacientes() {
-	$model = new ModelGerenciador();
-	$pacientes = $model->fetch();
-	$sinaisVitaisPacientes = [];
-	foreach ($pacientes as $paciente) {
-		$sinaisVitaisPaciente    = getSinaisVitais();
-		$sinaisVitaisPacientes[] = [
-			'Id' => $paciente['Id'],
-			'frequenciaCardiaca' => $sinaisVitaisPaciente['frequenciaCardiaca'],
-			'sistolicaBP'        => $sinaisVitaisPaciente['sistolicaBP'],
-			'diastolicaBP'       => $sinaisVitaisPaciente['diastolicaBP'],
-			'temperatura'        => $sinaisVitaisPaciente['temperatura'],
-			'saturacaoOxigenio' => $sinaisVitaisPaciente['saturacaoOxigenio'],
-		];
-	}
-	return $sinaisVitaisPacientes;
 }
 
 /**

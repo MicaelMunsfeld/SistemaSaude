@@ -1,0 +1,45 @@
+.legendaStatus {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 5px;
+    cursor: pointer;
+    position: relative;
+}
+
+.verdePadrao {
+    background-color: #00f700;
+}
+
+.vermelho {
+    background-color: red;
+}
+
+.ml-77 {
+    margin-left: 77px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #17a2b8!important;
+    border-color: #17a2b8!important;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #17a2b8!important;
+    border-color: #17a2b8!important;
+}
+
+a.badge-warning:focus, a.badge-warning:hover {
+    color: #fff;
+    background-color: #d39e00;
+}
+
+a.badge-warning {
+    color: #fff;
+}
+
+.bg-custom {
+    background-color: #17a2b8 !important;
+}

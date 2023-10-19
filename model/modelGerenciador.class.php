@@ -2,10 +2,10 @@
 
 class ModelGerenciador {
 
-	private $server = "localhost";
+	private $server   = "localhost";
 	private $username = "root";
 	private $password;
-	private $db = "sistemaSaude";
+	private $db       = "sistemaSaude";
 	private $conn;
 
 
@@ -44,16 +44,16 @@ class ModelGerenciador {
 	                $query = "INSERT INTO tbpaciente (nome, sexo, idade, cidade) VALUES (?, ?, ?, ?)";
 	                $stmt  = $this->conn->prepare($query);
 	                $stmt->bind_param("ssis", $nome, $sexo, $idade, $cidade);
-
-	                if ($stmt->execute()) {
-	                    echo "<script>alert('Paciente cadastrado!');</script>";
-	                    echo "<script>window.location.href = 'index.php';</script>";
-	                } else {
-	                    echo "<script>alert('Erro ao inserir o paciente.');</script>";
-	                }
-	            } else {
-	                echo "<script>alert('Campos vazios.');</script>";
-	            }
+	                $insert = $stmt->execute();
+                    if ($insert) {
+                        echo '<div class="alert alert-success" role="alert">Inserido com sucesso!</div>';
+                            header("Refresh: 2; URL=index.php");
+                    } else {
+                        echo '<div class="alert alert-danger" role="alert">Falha ao incluir</div>';
+                    }
+                } else {
+                    echo '<div class="alert alert-warning" role="alert">Preencha todos os campos</div>';
+               }
 	        }
 	    }
 	}
