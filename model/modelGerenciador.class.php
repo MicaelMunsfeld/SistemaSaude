@@ -107,10 +107,7 @@ class ModelGerenciador {
     	$stmt->bind_param("i", $id);
     	$stmt->execute();
     	$result = $stmt->get_result();
-    	if($result->num_rows === 0) {
-    		return null;
-    	}
-    	return $result->fetch_assoc();
+        return ($result->num_rows === 0) ? null : $result->fetch_assoc();
     }
 
     /**
@@ -142,6 +139,7 @@ class ModelGerenciador {
     	}
     	throw new Exception("Erro ao atualizar o paciente.");
     }
+    
 }
 
 ?>

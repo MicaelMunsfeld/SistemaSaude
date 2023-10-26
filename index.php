@@ -60,8 +60,11 @@ include 'monitoramento.php';
                                         <a href="delete.php?Id=<?php echo $paciente['Id']; ?>" class="badge badge-danger">
                                             <i class="fas fa-trash"></i> Excluir
                                         </a>
-                                        <a href="edit.php?Id=<?php echo $paciente['Id']; ?>" class="badge badge-warning	">
+                                        <a href="edit.php?Id=<?php echo $paciente['Id']; ?>" class="badge badge-warning">
                                             <i class="fas fa-edit"></i> Alterar
+                                        </a>
+                                        <a href="historico.php?selectedPatientId=<?php echo $paciente['Id']; ?>" class="badge badge-info historico-btn" data-paciente-id="<?php echo $paciente['Id']; ?>">
+                                            <i class="fas fa-edit"></i> Histórico
                                         </a>
                                     </td>
                                     <td>

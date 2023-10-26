@@ -43,3 +43,13 @@ a.badge-warning {
 .bg-custom {
     background-color: #17a2b8 !important;
 }
+
+.text-bg-info {
+    background-color: #2379f9!important;
+    color: #fff;
+}
+
+.text-bg-info:hover {
+    background-color: #1a5dbf!important;
+    color: #fff;
+}
