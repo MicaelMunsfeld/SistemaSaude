@@ -1,69 +1,41 @@
-# SistemaSaude
- 
-Projeto desenvolvido de forma individual para a matéria de Linguagem de Programação e Paradigmas.
-Neste projeto foi desenvolvido um sistema de monitoramento de pacientes para uma unidade de saúde, utilizando os princípios da Programação Orientada a Eventos (POE). 
-O sistema permite o acompanhamento em tempo real dos sinais vitais dos pacientes, alertando a equipe médica em caso de variações críticas e facilitando a tomada de decisões clínicas.
+# 🏥 Sistema de Monitoramento de Saúde (POE)
 
-SQL - MySql
+Sistema desenvolvido individualmente para a disciplina de **Linguagem de Programação e Paradigmas**. O projeto consiste em uma plataforma de monitoramento de pacientes para unidades de saúde utilizando o paradigma de **Programação Orientada a Eventos (POE)**.
 
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Tempo de geração: 19/10/2023 às 03:40
--- Versão do servidor: 10.4.28-MariaDB
--- Versão do PHP: 8.2.4
+O sistema permite o acompanhamento dinâmico dos sinais vitais dos pacientes, disparando alertas automáticos para a equipe médica em caso de variações críticas e auxiliando na tomada de decisões clínicas rápidas.
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+---
 
+## 🚀 Diferenciais e Conceitos Técnicos
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+* **Programação Orientada a Eventos (POE):** Arquitetura reativa que responde a mudanças de estado e gatilhos em tempo real.
+* **Foco em Domínio Real:** Aplicação prática de conceitos de software para a área da saúde (HealthTech).
+* **Persistência Relacional:** Modelagem de dados estruturada para garantir a consistência dos registros dos pacientes.
 
---
--- Banco de dados: `sistemasaude`
---
+---
 
--- --------------------------------------------------------
+## 🛠️ Tecnologias Utilizadas
 
---
+* **Paradigma:** Orientação a Eventos (POE)
+* **Banco de Dados:** MariaDB / MySQL 
+* **Ambiente de Desenvolvimento:** PHP 8.2+ / XAMPP
+
+---
+
+## 🗄️ Estrutura do Banco de Dados
+
+Abaixo está a estrutura DDL utilizada para a criação da tabela de pacientes, contendo chaves primárias e auto-incremento configurados.
+
+<details>
+<summary>📂 Clique aqui para visualizar o Script SQL</summary>
+
+```sql
 -- Estrutura para tabela `tbpaciente`
---
-
-CREATE TABLE `tbpaciente` (
-  `Id` int(11) NOT NULL,
-  `nome` varchar(255) NOT NULL,
-  `sexo` char(1) NOT NULL,
-  `idade` int(11) NOT NULL,
-  `cidade` varchar(255) NOT NULL
+CREATE TABLE tbpaciente (
+  Id int(11) NOT NULL AUTO_INCREMENT,
+  nome varchar(255) NOT NULL,
+  sexo char(1) NOT NULL,
+  idade int(11) NOT NULL,
+  cidade varchar(255) NOT NULL,
+  PRIMARY KEY (Id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Índices para tabelas despejadas
---
-
---
--- Índices de tabela `tbpaciente`
---
-ALTER TABLE `tbpaciente`
-  ADD PRIMARY KEY (`Id`);
-
---
--- AUTO_INCREMENT para tabelas despejadas
---
-
---
--- AUTO_INCREMENT de tabela `tbpaciente`
---
-ALTER TABLE `tbpaciente`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
